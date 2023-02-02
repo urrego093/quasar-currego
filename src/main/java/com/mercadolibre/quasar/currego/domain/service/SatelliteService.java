@@ -53,10 +53,7 @@ public class SatelliteService implements SatelliteLocationUseCase {
                     .collect(Collectors.toList());
         }
 
-        String result  = finalMessage.stream().reduce("", (s, s2) -> s + s2 + " ").trim();
-
-        return result;
+        return finalMessage.stream().reduce("", (s, s2) -> s + s2 + " ").trim();;
     }
-
 
 }
