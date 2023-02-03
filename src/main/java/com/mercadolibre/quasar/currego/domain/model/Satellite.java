@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class Satellite {
     String name;
     double[] positions;
+    double distance;
+    String [] message;
 }

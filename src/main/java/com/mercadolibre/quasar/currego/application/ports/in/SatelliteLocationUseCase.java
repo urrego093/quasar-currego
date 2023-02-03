@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface SatelliteLocationUseCase {
     double[] getLocation(double[] locations);
-    String GetMessage( String[]... messages);
+    String getMessage( String[]... messages);
 
 }
