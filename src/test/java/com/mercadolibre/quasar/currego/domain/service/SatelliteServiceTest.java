@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -67,6 +68,6 @@ class SatelliteServiceTest {
         String[] message3 = {"este", "", "un", "", ""};
 
         Assertions.assertEquals("este mensaje es secreto un",
-                satelliteService.getMessage(message1, message2, message3));
+                satelliteService.getMessage(List.of(message1, message2, message3)));
     }
 }

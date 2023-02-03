@@ -29,6 +29,6 @@ public class SatelliteRestAdapter {
         String[] message3 = {"este", "", "un", "", ""};
 
 
-        return satelliteLocationUseCase.getMessage(message1, message2, message3);
+        return satelliteLocationUseCase.getMessage(List.of(message1, message2, message3));
     }
 }

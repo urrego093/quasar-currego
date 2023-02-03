@@ -10,8 +10,10 @@ import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 
@@ -21,25 +23,49 @@ public class SatelliteService implements SatelliteLocationUseCase {
 
     private final SatelliteRepository satelliteRepository;
 
-    @Override
-    public double[] getLocation(double[] distances) {
-
-        List<Satellite> satellites = satelliteRepository.findAll();
+    private double[] calculateDistances(List<Satellite> satellites){
         double[][] positions = new double[satellites.size()][];
+        double[] distances =  new double[satellites.size()];
         for (int i = 0; i < satellites.size(); i++) {
             positions[i] = satellites.get(i).getPositions();
+            distances[i] = satellites.get(i).getDistance();
         }
 
         NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances),
                 new LevenbergMarquardtOptimizer());
         LeastSquaresOptimizer.Optimum optimum = solver.solve();
         return optimum.getPoint().toArray();
+    }
 
+    @Override
+    public double[] getLocation(double[] distances) {
+
+        List<Satellite> satellites = satelliteRepository.findAll();
+        for (int i = 0; i < satellites.size(); i++) {
+            satellites.get(i).setDistance(distances[i]);
+        }
+
+        return calculateDistances(satellites);
+
+    }
+
+    @Override
+    public double[] getLocation(List<Satellite> satelliteDistances) {
+        List<Satellite> satellites = new ArrayList<>();
+        satelliteDistances.forEach(satelliteDistance -> {
+            Optional<Satellite> optionalSatellite = satelliteRepository.findByName(satelliteDistance.getName());
+            if (optionalSatellite.isPresent()){
+                Satellite satellite = optionalSatellite.get();
+                satellite.setDistance( satelliteDistance.getDistance() );
+                satellites.add(satellite);
+            }
+        });
+        return calculateDistances(satellites);
     }
 
 
     @Override
-    public String getMessage(String[]... messages) {
+    public String getMessage(List<String[]> messages) {
 
         int maxSize = 0;
         LinkedHashSet<String> finalMessage = new LinkedHashSet<>();

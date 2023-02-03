@@ -2,7 +2,9 @@ package com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.re
 
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 public class TopSecretRequest {
-    SatelliteRequest[] satellites;
+    List<SatelliteRequest> satellites;
 }
