@@ -1,6 +1,6 @@
 package com.mercadolibre.quasar.currego.infrastructure.adapaters.out;
 
-import com.mercadolibre.quasar.currego.application.ports.out.SateliteRepository;
+import com.mercadolibre.quasar.currego.application.ports.out.SatelliteRepository;
 import com.mercadolibre.quasar.currego.domain.model.Satellite;
 import org.springframework.stereotype.Component;
 
@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class SateliteRepositoryAdapter  implements SateliteRepository {
+public class SatelliteRepositoryAdapter implements SatelliteRepository {
     @Override
-    public List<Satellite> getTestSatellites() {
+    public List<Satellite> findAll() {
         Satellite kenobi = Satellite.builder()
                 .name("kenobi")
                 .positions(new double[]{-500, -200})

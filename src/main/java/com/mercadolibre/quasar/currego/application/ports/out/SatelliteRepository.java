@@ -4,7 +4,7 @@ import com.mercadolibre.quasar.currego.domain.model.Satellite;
 
 import java.util.List;
 
-public interface SateliteRepository {
+public interface SatelliteRepository {
 
-    List<Satellite> getTestSatellites();
+    List<Satellite> findAll();
 }
