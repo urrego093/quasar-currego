@@ -7,10 +7,10 @@ import lombok.Data;
 
 import java.util.List;
 
-@DynamoDBTable(tableName = "meli-quasar-satellite")
+@DynamoDBTable(tableName = "meli-quasar")
 @Data
 public class SatelliteEntity {
-    @DynamoDBHashKey(attributeName = "name")
+    @DynamoDBHashKey(attributeName = "satelliteName ")
     String name;
     @DynamoDBAttribute
     List<String> message;
