@@ -39,8 +39,9 @@ public class SatelliteRepositoryDynamoDbAdapter implements SatelliteRepository {
                 .withKeyConditionExpression("satelliteName  = :val1")
                 .withExpressionAttributeValues(eav);
         List<SatelliteEntity> queryResult = dynamoDBMapper.query(SatelliteEntity.class, queryExpression);
-        List<Satellite> response = satelliteRepositoryMapper.toSatelliteList(queryResult);
 
+        //TODO use this to reduce boilerplate code
+//        List<SatelliteEntity> queryResult = dynamoDBMapper.load(SatelliteEntity.class, queryExpression);
 
         if(queryResult.size() == 1){
             return  Optional.of( satelliteRepositoryMapper.toSatellite(queryResult.get(0)  ) );

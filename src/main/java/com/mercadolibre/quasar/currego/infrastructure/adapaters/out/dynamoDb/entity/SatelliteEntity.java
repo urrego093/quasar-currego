@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class SatelliteEntity {
     @DynamoDBHashKey(attributeName = "satelliteName ")
-    String name;
+    String satelliteName;
     @DynamoDBAttribute
     List<String> message;
     @DynamoDBAttribute
