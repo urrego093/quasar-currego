@@ -9,5 +9,7 @@ public interface SatelliteRepository {
 
     List<Satellite> findAll();
 
-    Optional<Satellite> findByName(String name);
+    Optional<Satellite> findByName(String satelliteName);
+
+    void save(Satellite satellite) ;
 }

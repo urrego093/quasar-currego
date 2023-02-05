@@ -1,9 +1,8 @@
 package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.mercadolibre.quasar.currego.application.ports.out.SatelliteRepository;
 import com.mercadolibre.quasar.currego.domain.model.Satellite;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.entity.SatelliteEntity;
@@ -12,43 +11,57 @@ import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.map
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
 public class SatelliteRepositoryDynamoDbAdapter implements SatelliteRepository {
 
+
     private final DynamoDBMapper dynamoDBMapper;
-    private final SatelliteRepositoryMapper satelliteRepositoryMapper;
+    private final SatelliteRepositoryMapper mapper;
+
+    /**
+     * Had to create this utilitary method bc dynamobd caauses errors while storing empoytStrings inside a list or field
+     *
+     * @param original
+     * @param toReplace
+     * @param replacement
+     * @return
+     */
+    private List<String> fixSpaceErrors(List<String> original, String toReplace, String replacement){
+        return original.stream().map(word -> word.isEmpty() ? word.replaceAll(toReplace, replacement) : word).toList();
+    }
 
     @Override
     public List<Satellite> findAll() {
-        List<SatelliteEntity> result =  dynamoDBMapper.scan(SatelliteEntity.class, new DynamoDBScanExpression());
-        return satelliteRepositoryMapper.toSatelliteList(result);
+        List<SatelliteEntity> resultList =  dynamoDBMapper.scan(SatelliteEntity.class, new DynamoDBScanExpression());
+        if( resultList != null){
+            resultList.forEach(result -> {
+                List<String> fixedMessage = fixSpaceErrors( result.getMessage() , "@", "");
+                result.setMessage(fixedMessage);
+            });
+        }
+        return mapper.toSatelliteList(resultList);
     }
 
 
     @Override
-    public Optional<Satellite> findByName(String name){
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":val1", new AttributeValue().withS(name));
-        DynamoDBQueryExpression<SatelliteEntity> queryExpression = new DynamoDBQueryExpression<SatelliteEntity>()
-                .withKeyConditionExpression("satelliteName  = :val1")
-                .withExpressionAttributeValues(eav);
-        List<SatelliteEntity> queryResult = dynamoDBMapper.query(SatelliteEntity.class, queryExpression);
-
-        //TODO use this to reduce boilerplate code
-//        List<SatelliteEntity> queryResult = dynamoDBMapper.load(SatelliteEntity.class, queryExpression);
-
-        if(queryResult.size() == 1){
-            return  Optional.of( satelliteRepositoryMapper.toSatellite(queryResult.get(0)  ) );
+    public Optional<Satellite> findByName(String satelliteName){
+        SatelliteEntity queryResult = dynamoDBMapper.load(SatelliteEntity.class, satelliteName);
+        if( queryResult != null){
+            List<String> fixedMessage = fixSpaceErrors( queryResult.getMessage() , "@", "");
+            queryResult.setMessage(fixedMessage);
         }
-        else {
-            return  Optional.empty();
-        }
+        return Optional.of(mapper.toSatellite(queryResult));
 
+    }
+
+    @Override
+    public void save( Satellite satellite) {
+        SatelliteEntity satelliteEntity = mapper.toSatelliteEntity(satellite);
+        List<String> fixedMessage = fixSpaceErrors( satelliteEntity.getMessage() , "", "@");
+        satelliteEntity.setMessage(fixedMessage);
+        dynamoDBMapper.save(satelliteEntity, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES));
     }
 }

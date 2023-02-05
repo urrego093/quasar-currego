@@ -10,4 +10,6 @@ public interface SatelliteLocationUseCase {
     double[] getLocation(List<Satellite> satelliteDistances);
     String getMessage( List<String[]> messages);
 
+    Boolean updateSatellite( Satellite  satellite);
+
 }

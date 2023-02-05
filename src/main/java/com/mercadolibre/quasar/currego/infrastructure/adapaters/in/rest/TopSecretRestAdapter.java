@@ -2,11 +2,13 @@ package com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest;
 
 import com.mercadolibre.quasar.currego.application.ports.in.SatelliteLocationUseCase;
 import com.mercadolibre.quasar.currego.domain.model.Satellite;
+import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.request.SatelliteRequest;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.request.TopSecretRequest;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.response.PositionResponse;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.response.TopSecretResponse;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.mapper.TopSecretRestMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,4 +36,12 @@ public class TopSecretRestAdapter {
                 .x(positions[0]).y(positions[1]).build();
         return TopSecretResponse.builder().position(positionResponse).message(hiddenMessage).build();
     }
+
+    @PostMapping(value = "/topSecret_split/{satellite_name}")
+    Boolean updateDistance(@RequestBody SatelliteRequest satelliteRequest, @PathVariable String satellite_name){
+        Satellite satellite = topSecretRestMapper.toSatellite(satelliteRequest);
+        satellite.setName(satellite_name);
+        return satelliteLocationUseCase.updateSatellite(satellite);
+    }
+
 }

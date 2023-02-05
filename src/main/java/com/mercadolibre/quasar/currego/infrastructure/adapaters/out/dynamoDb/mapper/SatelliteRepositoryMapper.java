@@ -11,6 +11,9 @@ import java.util.List;
 public interface SatelliteRepositoryMapper {
     @Mapping(source = "satelliteName", target = "name")
     Satellite toSatellite (SatelliteEntity satel1lite);
+
+    @Mapping( target= "satelliteName",  source= "name")
+    SatelliteEntity toSatelliteEntity (Satellite satellite);
     List<Satellite> toSatelliteList (List<SatelliteEntity> satelliteEntityList);
 
     double[] toDoubleArray( List<Double> doubleList);

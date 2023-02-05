@@ -83,4 +83,20 @@ public class SatelliteService implements SatelliteLocationUseCase {
         return finalMessage.stream().reduce("", (s, s2) -> s + s2 + " ").trim();
     }
 
+    @Override
+    public Boolean updateSatellite(Satellite satellite) {
+        Optional<Satellite> optionalExistingSatellite = satelliteRepository.findByName(satellite.getName());
+        if (optionalExistingSatellite.isPresent()){
+            Satellite existingSatellite =  optionalExistingSatellite.get();
+            existingSatellite.setDistance( satellite.getDistance() );
+            existingSatellite.setMessage(satellite.getMessage() );
+            satelliteRepository.save(existingSatellite);
+            return Boolean.TRUE;
+        }
+        else {
+            return Boolean.FALSE;
+        }
+
+    }
+
 }
