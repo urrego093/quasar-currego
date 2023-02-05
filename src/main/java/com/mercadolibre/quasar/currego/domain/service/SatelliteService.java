@@ -37,7 +37,35 @@ public class SatelliteService implements SatelliteLocationUseCase {
         return optimum.getPoint().toArray();
     }
 
+    /**
+     * Givenm a List of String arrays finds a hidden message merging all the arrays
+     * @param messages List of messages to merge
+     * @return The hidden message
+     */
+    private String findHiddenMessage(List<String[]> messages){
+        int maxSize = 0;
+        LinkedHashSet<String> finalMessage = new LinkedHashSet<>();
+        for (String[] message : messages) {
+            maxSize = Math.max(message.length, maxSize);
+        }
+
+        for (String[] message : messages) {
+            IntStream.range(0, maxSize)
+                    .filter(index -> (message[index] != null && !message[index].equals("")))
+                    .mapToObj(index -> finalMessage.add(message[index]))
+                    .toList();
+        }
+        return finalMessage.stream().reduce("", (s, s2) -> s + s2 + " ").trim();
+
+    }
+
     @Override
+
+
+    /**
+     * @deprecated
+     */
+    @Deprecated(since = "05/02/2023")
     public double[] getLocation(double[] distances) {
 
         List<Satellite> satellites = satelliteRepository.findAll();
@@ -64,23 +92,11 @@ public class SatelliteService implements SatelliteLocationUseCase {
     }
 
 
+
+
     @Override
     public String getMessage(List<String[]> messages) {
-
-        int maxSize = 0;
-        LinkedHashSet<String> finalMessage = new LinkedHashSet<>();
-        for (String[] message : messages) {
-            maxSize = Math.max(message.length, maxSize);
-        }
-
-        for (String[] message : messages) {
-            IntStream.range(0, maxSize)
-                    .filter(index -> (message[index] != null && !message[index].equals("")))
-                    .mapToObj(index -> finalMessage.add(message[index]))
-                    .toList();
-        }
-
-        return finalMessage.stream().reduce("", (s, s2) -> s + s2 + " ").trim();
+        return findHiddenMessage(messages);
     }
 
     @Override
@@ -99,4 +115,16 @@ public class SatelliteService implements SatelliteLocationUseCase {
 
     }
 
+    @Override
+    public double[] getLocation() {
+        List<Satellite> satellites = satelliteRepository.findAll();
+        return calculateDistances(satellites);
+    }
+
+    @Override
+    public String getMessage() {
+        List<Satellite> satellites = satelliteRepository.findAll();
+        List<String[]> messages = satellites.stream().map(Satellite::getMessage).toList();
+        return findHiddenMessage(messages);
+    }
 }

@@ -1,12 +1,12 @@
-package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb;
+package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.mercadolibre.quasar.currego.application.ports.out.SatelliteRepository;
 import com.mercadolibre.quasar.currego.domain.model.Satellite;
-import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.entity.SatelliteEntity;
-import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.mapper.SatelliteRepositoryMapper;
+import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo.entity.SatelliteEntity;
+import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo.mapper.SatelliteRepositoryMapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,13 +24,14 @@ public class SatelliteRepositoryDynamoDbAdapter implements SatelliteRepository {
     /**
      * Had to create this utilitary method bc dynamobd caauses errors while storing empoytStrings inside a list or field
      *
-     * @param original
-     * @param toReplace
-     * @param replacement
-     * @return
+     * @param original original List of strings, with caracters to replace
+     * @param toReplace  special char to get replaced
+     * @param replacement  special char to replace instead of @toReplace
+     * @return a new list of String arrays with the chars replaced
      */
+    //TODO replace  method usages with a real solution like storing a single array into the db then splitting by commas
     private List<String> fixSpaceErrors(List<String> original, String toReplace, String replacement){
-        return original.stream().map(word -> word.isEmpty() ? word.replaceAll(toReplace, replacement) : word).toList();
+        return original.stream().map(word -> word.isEmpty() || word.equals("@") ? word.replaceAll(toReplace, replacement) : word).toList();
     }
 
     @Override
@@ -62,6 +63,6 @@ public class SatelliteRepositoryDynamoDbAdapter implements SatelliteRepository {
         SatelliteEntity satelliteEntity = mapper.toSatelliteEntity(satellite);
         List<String> fixedMessage = fixSpaceErrors( satelliteEntity.getMessage() , "", "@");
         satelliteEntity.setMessage(fixedMessage);
-        dynamoDBMapper.save(satelliteEntity, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES));
+        dynamoDBMapper.save(satelliteEntity, DynamoDBMapperConfig.builder().withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES).build() );
     }
 }

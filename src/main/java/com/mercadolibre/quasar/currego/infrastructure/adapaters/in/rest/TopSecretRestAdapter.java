@@ -8,13 +8,9 @@ import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.res
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.response.TopSecretResponse;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.mapper.TopSecretRestMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController(value = "/")
 @RequiredArgsConstructor
@@ -27,7 +23,7 @@ public class TopSecretRestAdapter {
     @PostMapping(value = "topSecret")
     TopSecretResponse findEnemySpaceShip(@RequestBody TopSecretRequest request) {
         List<Satellite> satellites = topSecretRestMapper.toSatelliteArray(request.getSatellites());
-        List<String[]> messages = satellites.stream().map(satellite -> satellite.getMessage()).collect(Collectors.toList());
+        List<String[]> messages = satellites.stream().map( Satellite::getMessage).toList();
 
         double[] positions = satelliteLocationUseCase.getLocation(satellites);
         String hiddenMessage = satelliteLocationUseCase.getMessage(messages);
@@ -37,11 +33,23 @@ public class TopSecretRestAdapter {
         return TopSecretResponse.builder().position(positionResponse).message(hiddenMessage).build();
     }
 
-    @PostMapping(value = "/topSecret_split/{satellite_name}")
-    Boolean updateDistance(@RequestBody SatelliteRequest satelliteRequest, @PathVariable String satellite_name){
+    @PostMapping(value = "/topSecret_split/{satelliteName}")
+    Boolean updateDistance(@RequestBody SatelliteRequest satelliteRequest, @PathVariable String satelliteName){
         Satellite satellite = topSecretRestMapper.toSatellite(satelliteRequest);
-        satellite.setName(satellite_name);
+        satellite.setName(satelliteName);
         return satelliteLocationUseCase.updateSatellite(satellite);
+    }
+
+    @GetMapping(value = "/topSecret_split/")
+    TopSecretResponse getDistance(){
+
+//TODO this two methods could be combined
+        double[] positions = satelliteLocationUseCase.getLocation();
+        String hiddenMessage = satelliteLocationUseCase.getMessage();
+
+        PositionResponse positionResponse = PositionResponse.builder()
+                .x(positions[0]).y(positions[1]).build();
+        return TopSecretResponse.builder().position(positionResponse).message(hiddenMessage).build();
     }
 
 }
