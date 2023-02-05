@@ -1,7 +1,7 @@
-package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.mapper;
+package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo.mapper;
 
 import com.mercadolibre.quasar.currego.domain.model.Satellite;
-import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.entity.SatelliteEntity;
+import com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo.entity.SatelliteEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

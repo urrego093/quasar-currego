@@ -1,9 +1,8 @@
-package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamoDb.entity;
+package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo.entity;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
