@@ -1,0 +1,7 @@
+#FROM openjdk:17-jdk-slim
+FROM bellsoft/liberica-openjdk-alpine:17
+ADD ${fileName}.jar ${fileName}.jar
+VOLUME /tmp
+RUN sh -c 'touch /${fileName}.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/${fileName}.jar","sh","-c"]
+EXPOSE 8080
