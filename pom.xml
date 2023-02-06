@@ -11,11 +11,10 @@
 
     <groupId>com.mercadolibre</groupId>
     <artifactId>quasar-currego</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>quasar-currego</name>
     <description>quasar-currego</description>
     <properties>
-        <start-class>com.mercadolibre.quasar.currego.QuasarCurregoApplication</start-class>
 
         <java.version>17</java.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
@@ -94,6 +93,15 @@
         <plugins>
 
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.mercadolibre.quasar.currego.QuasarCurregoApplication</mainClass>
+                    <layout>JAR</layout>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -145,7 +153,7 @@
                                     <descriptorRef>artifact</descriptorRef>
                                 </assembly>
                                 <tags>
-                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
                                     <tag>${project.version}</tag>
                                 </tags>
 
