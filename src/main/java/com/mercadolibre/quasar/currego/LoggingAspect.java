@@ -17,7 +17,7 @@ import java.util.Map;
 @Component
 @Slf4j
 public class LoggingAspect {
-    @Pointcut("@annotation(com.mercadolibre.quasar.currego.TrackExecutionTimeASpect)")
+    @Pointcut("@annotation(com.mercadolibre.quasar.currego.TrackExecutionTimeTarget)")
     public void pointcut() {
     }
 

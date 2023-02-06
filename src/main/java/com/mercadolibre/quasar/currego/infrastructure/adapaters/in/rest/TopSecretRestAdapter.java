@@ -1,6 +1,6 @@
 package com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest;
 
-import com.mercadolibre.quasar.currego.TrackExecutionTimeASpect;
+import com.mercadolibre.quasar.currego.TrackExecutionTimeTarget;
 import com.mercadolibre.quasar.currego.application.ports.in.SatelliteLocationUseCase;
 import com.mercadolibre.quasar.currego.domain.model.Satellite;
 import com.mercadolibre.quasar.currego.infrastructure.adapaters.in.rest.data.request.SatelliteRequest;
@@ -26,7 +26,7 @@ public class TopSecretRestAdapter {
 
 
     @PostMapping(value = "topSecret")
-    @TrackExecutionTimeASpect
+    @TrackExecutionTimeTarget
     public ResponseEntity<TopSecretResponse> findEnemySpaceShip(@RequestBody TopSecretRequest request) {
         List<Satellite> satellites = topSecretRestMapper.toSatelliteArray(request.getSatellites());
         List<String[]> messages = satellites.stream().map( Satellite::getMessage).toList();
@@ -43,7 +43,7 @@ public class TopSecretRestAdapter {
     }
 
     @PostMapping(value = "/topSecret_split/{satelliteName}")
-    @TrackExecutionTimeASpect
+    @TrackExecutionTimeTarget
     public ResponseEntity<Boolean> updateDistance(@RequestBody SatelliteRequest satelliteRequest, @PathVariable String satelliteName){
         Satellite satellite = topSecretRestMapper.toSatellite(satelliteRequest);
         satellite.setName(satelliteName);
@@ -51,7 +51,7 @@ public class TopSecretRestAdapter {
     }
 
     @GetMapping(value = "/topSecret_split/")
-    @TrackExecutionTimeASpect
+    @TrackExecutionTimeTarget
     public ResponseEntity<TopSecretResponse> getDistance(){
 
 //TODO this two methods could be combined

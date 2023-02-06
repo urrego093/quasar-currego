@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -43,8 +44,9 @@ class SatelliteServiceTest {
                 .message(new String[] {"este", "", "un", "", ""})
                 .build();
 
+        List<Satellite> satellites =Arrays.asList(kenobi, skyWalker, sato);
         Mockito.when(satelliteRepository.findAll())
-                .thenReturn(Arrays.asList(kenobi, skyWalker, sato) );
+                .thenReturn(Optional.of(satellites));
     }
 
 
