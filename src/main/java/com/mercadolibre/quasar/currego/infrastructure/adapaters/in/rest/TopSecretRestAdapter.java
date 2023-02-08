@@ -25,7 +25,7 @@ public class TopSecretRestAdapter {
     private final SatelliteLocationUseCase satelliteLocationUseCase;
 
 
-    @PostMapping(value = "topSecret")
+    @PostMapping(value = "top-secret")
     @TrackExecutionTimeTarget
     public ResponseEntity<TopSecretResponse> findEnemySpaceShip(@RequestBody TopSecretRequest request) {
         List<Satellite> satellites = topSecretRestMapper.toSatelliteArray(request.getSatellites());
@@ -42,7 +42,7 @@ public class TopSecretRestAdapter {
 
     }
 
-    @PostMapping(value = "/topSecret_split/{satelliteName}")
+    @PostMapping(value = "/top-secret-split/{satelliteName}")
     @TrackExecutionTimeTarget
     public ResponseEntity<Boolean> updateDistance(@RequestBody SatelliteRequest satelliteRequest, @PathVariable String satelliteName){
         Satellite satellite = topSecretRestMapper.toSatellite(satelliteRequest);
@@ -50,7 +50,7 @@ public class TopSecretRestAdapter {
         return new ResponseEntity<>( satelliteLocationUseCase.updateSatellite(satellite), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/topSecret_split/")
+    @GetMapping(value = "/top-secret-split/")
     @TrackExecutionTimeTarget
     public ResponseEntity<TopSecretResponse> getDistance(){
 

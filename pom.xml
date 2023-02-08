@@ -24,7 +24,8 @@
         <docker-maven-plugin.version>0.40.3</docker-maven-plugin.version>
         <groovy-all.version>3.0.14</groovy-all.version>
         <docker.image.prefix>camilourrego</docker.image.prefix>
-        <docker.image.name>meli_quasar</docker.image.name>
+        <docker.image.name>meli-quasar</docker.image.name>
+        <jacoco.version>0.8.7</jacoco.version>
 
 
     </properties>
@@ -101,6 +102,44 @@
     <build>
         <plugins>
 
+            <!-- testing -->
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/mercadolibre/quasar/currego/infrastructure/adapaters/in/rest/data/response/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/infrastructure/adapaters/out/dynamo/entity/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/domain/model/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/domain/exception/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/infrastructure/adapaters/in/rest/exception/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/domain/exception/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/application/ports/out/exception/*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/infrastructure/adapaters/**/*Adapter*</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/infrastructure/adapaters/**/mapper/**</exclude>
+                        <exclude>com/mercadolibre/quasar/currego/LoggingAspect*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- class path -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -110,6 +149,7 @@
                 </configuration>
             </plugin>
 
+            <!-- annotations -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -140,6 +180,8 @@
                 </configuration>
             </plugin>
 
+
+            <!-- docker -->
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>

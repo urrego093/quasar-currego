@@ -2,7 +2,6 @@ package com.mercadolibre.quasar.currego.infrastructure.adapaters.out.dynamo;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMappingException;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.mercadolibre.quasar.currego.application.ports.out.SatelliteRepository;
 import com.mercadolibre.quasar.currego.application.ports.out.exception.ApplicationOutRepositoryException;
