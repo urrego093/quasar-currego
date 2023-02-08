@@ -25,6 +25,16 @@ public class TopSecretRestAdapter {
     private final SatelliteLocationUseCase satelliteLocationUseCase;
 
 
+    /**
+     * Supossing that all satellites in request existe in the db, returns the position of an enemy spaceship and a hidden
+     * message calculated using all provided messages
+     *
+     * There should be at least 3 satellites otherwise method will fail
+     * Method could calculate position using more than 3 points but that wasnt a requirement
+     *
+     * @param request the information of satellites, could
+     * @return the POsition and hidden message
+     */
     @PostMapping(value = "top-secret")
     @TrackExecutionTimeTarget
     public ResponseEntity<TopSecretResponse> findEnemySpaceShip(@RequestBody TopSecretRequest request) {
@@ -42,6 +52,15 @@ public class TopSecretRestAdapter {
 
     }
 
+    /**
+     * Updates satellites distance and received message to an enemy spaceship.
+     *
+     * If the satellite does not exist returns a 404 error
+     *
+     * @param satelliteRequest the information to persist
+     * @param satelliteName the satellite name
+     * @return True if information was updated, false if not
+     */
     @PostMapping(value = "/top-secret-split/{satelliteName}")
     @TrackExecutionTimeTarget
     public ResponseEntity<Boolean> updateDistance(@RequestBody SatelliteRequest satelliteRequest, @PathVariable String satelliteName){
@@ -50,6 +69,13 @@ public class TopSecretRestAdapter {
         return new ResponseEntity<>( satelliteLocationUseCase.updateSatellite(satellite), HttpStatus.OK);
     }
 
+    /**
+     * Using all information stored in the satellite repository
+     * computes the position of an enemy spaceship using all satellites location and registered distance to it
+     * Also computes a hidden message trying to use the message fragments  captured by each satellite
+     * @return the calculated position of an enemy spaceship and a hidden message discovered after joining
+     * all available message fragmnts in each satellite
+     */
     @GetMapping(value = "/top-secret-split/")
     @TrackExecutionTimeTarget
     public ResponseEntity<TopSecretResponse> getDistance(){

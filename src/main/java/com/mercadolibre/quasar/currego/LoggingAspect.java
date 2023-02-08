@@ -1,17 +1,12 @@
 package com.mercadolibre.quasar.currego;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Aspect
 @Component
@@ -21,6 +16,12 @@ public class LoggingAspect {
     public void pointcut() {
     }
 
+    /**
+     * Logs how much the method execution lasted in order to create som metrics
+     *
+     * @param joinPoint The annotation that methods to be tracked will have, ist a custom one!
+     * @return The returned object response, all mapped methods should have an Object response
+     */
     @Around("pointcut()")
     public Object logMethod(ProceedingJoinPoint joinPoint) {
 
@@ -31,7 +32,7 @@ public class LoggingAspect {
             long endtime = System.currentTimeMillis();
             log.info("==> class: {}, method(s): {}, elapsedTime: {}  ",
                     signature.getMethod().getDeclaringClass(), signature.getMethod().getName(),
-                    (endtime-startTime) +"ms" );
+                    (endtime - startTime) + "ms");
             return object;
         } catch (Throwable e) {
             log.error("Failed to log elapsed method time");
