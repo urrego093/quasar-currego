@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "eb98d35c-3d7d-41e4-a0da-1124cebb32db",
+		"name": "meli-quasar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3760835"
+	},
+	"item": [
+		{
+			"name": "local / lambda",
+			"item": [
+				{
+					"name": "top_secret_split",
+					"item": [
+						{
+							"name": "updateData",
+							"item": [
+								{
+									"name": "update sato",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authorizationToken",
+												"value": "allow",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\"distance\": 142.7,\r\n\"message\": [\"este\", \"\", \"un\", \"\", \"\"]\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/top-secret-split/sato",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"top-secret-split",
+												"sato"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update kenobi",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authorizationToken",
+												"value": "allow",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\"distance\": 100.0,\r\n\"message\": [\"este\", \"\", \"\", \"mensaje\", \"\"]\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/top-secret-split/kenobi",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"top-secret-split",
+												"kenobi"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update skywalker",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authorizationToken",
+												"value": "allow",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\"distance\": 115.5,\r\n\"message\": [\"\", \"es\", \"\", \"\", \"secreto\"]\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/top-secret-split/skywalker",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"top-secret-split",
+												"skywalker"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "getData",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorizationToken",
+										"value": "allow",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"distance\": 100.0,\r\n\"message\": [\"este\", \"\", \"\", \"mensaje\", \"\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base-url}}/top-secret-split/",
+									"host": [
+										"{{base-url}}"
+									],
+									"path": [
+										"top-secret-split",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "top_secret_all_ok",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorizationToken",
+								"value": "allow",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"satellites\": [\r\n        {\r\n            \"name\": \"kenobi\",\r\n            \"distance\": 100.0,\r\n            \"message\": [\r\n                \"este\",\r\n                \"\",\r\n                \"\",\r\n                \"mensaje\",\r\n                \"\"\r\n            ]\r\n        },\r\n        {\r\n            \"name\": \"skywalker\",\r\n            \"distance\": 115.5,\r\n            \"message\": [\r\n                \"\",\r\n                \"es\",\r\n                \"\",\r\n                \"\",\r\n                \"secreto\"\r\n            ]\r\n        },\r\n        {\r\n            \"name\": \"sato\",\r\n            \"distance\": 142.7,\r\n            \"message\": [\r\n                \"este\",\r\n                \"\",\r\n                \"un\",\r\n                \"\",\r\n                \"\"\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/top-secret",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"top-secret"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "top_secret_all_error",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorizationToken",
+								"value": "allow",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"satellites\": [\r\n        {\r\n            \"name\": \"kenobi\",\r\n            \"distance\": 100.0,\r\n            \"message\": [\r\n                \"este\",\r\n                \"\",\r\n                \"\",\r\n                \"mensaje\",\r\n                \"\"\r\n            ]\r\n        },\r\n        {\r\n            \"name\": \"sato\",\r\n            \"distance\": 142.7,\r\n            \"message\": [\r\n                \"este\",\r\n                \"\",\r\n                \"un\",\r\n                \"\",\r\n                \"\"\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/top-secret",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"top-secret"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
